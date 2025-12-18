@@ -1,7 +1,7 @@
 {
   "name": "astro-zenn-loader",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -13,6 +13,10 @@
   "files": [
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/staticWagomU/astro-zenn-loader"
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "tsc",
