@@ -11,7 +11,7 @@ type ZennLoaderProps = {
 
 const enclosureSchema = z.object({
 	url: z.string().url(),
-	length: z.union([z.string(), z.number()]),
+	length: z.union([z.string(), z.number()]).transform(Number),
 	type: z.string(),
 });
 
@@ -51,7 +51,10 @@ const processRssItem = (item: unknown): ZennItem | null => {
 	try {
 		return zennItemSchema.parse(item);
 	} catch (error) {
-		const itemId = (item as any)?.guid || "unknown";
+		const itemId =
+			typeof item === "object" && item !== null && "guid" in item
+				? String((item as { guid: unknown }).guid)
+				: "unknown";
 		console.error(`Failed to parse RSS item [${itemId}]:`, error);
 		return null;
 	}
@@ -71,7 +74,7 @@ const loadRssItems = async ({
 	let successCount = 0;
 	let failureCount = 0;
 
-	for (const rawItem of feed.items) {
+	for (const rawItem of feed.items ?? []) {
 		const parsedItem = processRssItem(rawItem);
 
 		if (parsedItem) {
