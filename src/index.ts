@@ -1,4 +1,4 @@
-import type { Loader, DataStore } from "astro/loaders";
+import type * as loaders from "astro/loaders";
 import { z } from "astro/zod";
 import Parser from "rss-parser";
 
@@ -61,7 +61,7 @@ const loadRssItems = async ({
 	store,
 	userName,
 }: {
-	store: DataStore;
+	store: loaders.DataStore;
 	userName: string;
 }): Promise<void> => {
 	const feed = await fetchRssFeed(userName);
@@ -92,7 +92,7 @@ const loadRssItems = async ({
 	}
 };
 
-export const zennLoader = (props: ZennLoaderProps): Loader => ({
+export const zennLoader = (props: ZennLoaderProps): loaders.Loader => ({
 	name: "zenn",
 	load: async ({ store }) => {
 		try {
