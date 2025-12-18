@@ -1,20 +1,20 @@
 import { describe, expect, it } from "vitest";
 import { buildFeedUrl, enclosureSchema, zennItemSchema } from "./index";
 
-describe("buildFeedUrl", () => {
-	it("should build correct feed URL for a given username", () => {
+describe("buildFeedUrl関数", () => {
+	it("ユーザー名から正しいフィードURLを構築する", () => {
 		const url = buildFeedUrl("testuser");
 		expect(url).toBe("https://zenn.dev/testuser/feed?all=1");
 	});
 
-	it("should handle usernames with special characters", () => {
+	it("特殊文字を含むユーザー名を処理できる", () => {
 		const url = buildFeedUrl("user-name_123");
 		expect(url).toBe("https://zenn.dev/user-name_123/feed?all=1");
 	});
 });
 
-describe("enclosureSchema", () => {
-	it("should parse valid enclosure data", () => {
+describe("enclosureスキーマ", () => {
+	it("有効なenclosureデータをパースできる", () => {
 		const validData = {
 			url: "https://example.com/image.png",
 			length: 12345,
@@ -25,7 +25,7 @@ describe("enclosureSchema", () => {
 		expect(result).toEqual(validData);
 	});
 
-	it("should transform string length to number", () => {
+	it("文字列のlengthを数値に変換する", () => {
 		const dataWithStringLength = {
 			url: "https://example.com/image.png",
 			length: "12345",
@@ -37,7 +37,7 @@ describe("enclosureSchema", () => {
 		expect(typeof result.length).toBe("number");
 	});
 
-	it("should reject invalid URL", () => {
+	it("無効なURLを拒否する", () => {
 		const invalidData = {
 			url: "not-a-valid-url",
 			length: 12345,
@@ -47,7 +47,7 @@ describe("enclosureSchema", () => {
 		expect(() => enclosureSchema.parse(invalidData)).toThrow();
 	});
 
-	it("should reject missing required fields", () => {
+	it("必須フィールドが欠けている場合は拒否する", () => {
 		const incompleteData = {
 			url: "https://example.com/image.png",
 		};
@@ -56,7 +56,7 @@ describe("enclosureSchema", () => {
 	});
 });
 
-describe("zennItemSchema", () => {
+describe("zennItemスキーマ", () => {
 	const validZennItem = {
 		creator: "testuser",
 		title: "Test Article Title",
@@ -74,7 +74,7 @@ describe("zennItemSchema", () => {
 		isoDate: "2024-01-01T00:00:00.000Z",
 	};
 
-	it("should parse valid Zenn item", () => {
+	it("有効なZennアイテムをパースできる", () => {
 		const result = zennItemSchema.parse(validZennItem);
 		expect(result).toEqual({
 			...validZennItem,
@@ -85,12 +85,12 @@ describe("zennItemSchema", () => {
 		});
 	});
 
-	it("should reject item with missing title", () => {
+	it("titleが欠けている場合は拒否する", () => {
 		const { title, ...itemWithoutTitle } = validZennItem;
 		expect(() => zennItemSchema.parse(itemWithoutTitle)).toThrow();
 	});
 
-	it("should reject item with invalid link URL", () => {
+	it("無効なlink URLの場合は拒否する", () => {
 		const itemWithInvalidLink = {
 			...validZennItem,
 			link: "not-a-url",
@@ -98,7 +98,7 @@ describe("zennItemSchema", () => {
 		expect(() => zennItemSchema.parse(itemWithInvalidLink)).toThrow();
 	});
 
-	it("should reject item with invalid isoDate", () => {
+	it("無効なisoDateの場合は拒否する", () => {
 		const itemWithInvalidDate = {
 			...validZennItem,
 			isoDate: "not-a-date",
@@ -106,7 +106,7 @@ describe("zennItemSchema", () => {
 		expect(() => zennItemSchema.parse(itemWithInvalidDate)).toThrow();
 	});
 
-	it("should reject item with missing enclosure", () => {
+	it("enclosureが欠けている場合は拒否する", () => {
 		const { enclosure, ...itemWithoutEnclosure } = validZennItem;
 		expect(() => zennItemSchema.parse(itemWithoutEnclosure)).toThrow();
 	});
