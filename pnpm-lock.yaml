@@ -11,13 +11,16 @@ importers:
       astro:
         specifier: ^5.16.6
         version: 5.16.6(@types/node@24.2.1)(rollup@4.46.2)(typescript@5.9.2)
+      rss-parser:
+        specifier: ^3.13.0
+        version: 3.13.0
     devDependencies:
       '@biomejs/biome':
         specifier: 2.3.10
         version: 2.3.10
-      rss-parser:
-        specifier: ^3.13.0
-        version: 3.13.0
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.2
 
 packages:
 
