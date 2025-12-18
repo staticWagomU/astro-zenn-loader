@@ -5,17 +5,17 @@ import Parser from "rss-parser";
 const ZENN_RSS_BASE_URL = "https://zenn.dev";
 const RSS_FEED_PATH = "/feed?all=1";
 
-type ZennLoaderProps = {
+export type ZennLoaderProps = {
 	name: string;
 };
 
-const enclosureSchema = z.object({
+export const enclosureSchema = z.object({
 	url: z.string().url(),
 	length: z.union([z.string(), z.number()]).transform(Number),
 	type: z.string(),
 });
 
-const zennItemSchema = z.object({
+export const zennItemSchema = z.object({
 	creator: z.string(),
 	title: z.string(),
 	link: z.string().url(),
@@ -28,9 +28,9 @@ const zennItemSchema = z.object({
 	isoDate: z.string().datetime(),
 });
 
-type ZennItem = z.infer<typeof zennItemSchema>;
+export type ZennItem = z.infer<typeof zennItemSchema>;
 
-const buildFeedUrl = (userName: string): string => {
+export const buildFeedUrl = (userName: string): string => {
 	return `${ZENN_RSS_BASE_URL}/${userName}${RSS_FEED_PATH}`;
 };
 
